@@ -1,6 +1,5 @@
-// filepath: /Users/mc/Desktop/Devops Assignment/event-service/routes/eventRoutes.js
 const express = require("express");
-const { getEvents, getEventById, createEvent, checkEventAvailability } = require("../controllers/eventController");
+const { getEvents, getEventById, createEvent, checkEventAvailability, reduceTickets } = require("../controllers/eventController");
 
 const router = express.Router();
 
@@ -15,5 +14,8 @@ router.post("/", createEvent);
 
 // Check event availability
 router.get("/:id/availability", checkEventAvailability);
+
+// Reduce available tickets
+router.post("/reduce-tickets", reduceTickets);
 
 module.exports = router;

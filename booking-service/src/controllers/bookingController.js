@@ -20,6 +20,12 @@ const bookTickets = async (req, res) => {
             [user_id, event_id, tickets, 'CONFIRMED']
         );
 
+        // Reduce available tickets
+        await axios.post(`${process.env.EVENT_SERVICE_URL}/api/events/reduce-tickets`, {
+            event_id,
+            tickets
+        });
+
         // Publish Message to RabbitMQ
         const channel = getChannel();
         const notificationMessage = {

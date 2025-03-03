@@ -1,4 +1,3 @@
-// filepath: /Users/mc/Desktop/Devops Assignment/event-service/controllers/eventController.js
 const Event = require("../models/Event");
 
 // Get all events
@@ -47,6 +46,27 @@ exports.checkEventAvailability = async (req, res) => {
             tickets: event.availableTickets,
             price: 100 // Assuming a fixed price for simplicity
         });
+    } catch (err) {
+        res.status(500).json({ error: "Server error" });
+    }
+};
+
+// Reduce available tickets
+exports.reduceTickets = async (req, res) => {
+    const { event_id, tickets } = req.body;
+
+    try {
+        const event = await Event.findById(event_id);
+        if (!event) return res.status(404).json({ error: "Event not found" });
+
+        if (event.availableTickets < tickets) {
+            return res.status(400).json({ message: 'Not enough tickets available' });
+        }
+
+        event.availableTickets -= tickets;
+        await event.save();
+
+        res.status(200).json({ message: 'Tickets reduced', event });
     } catch (err) {
         res.status(500).json({ error: "Server error" });
     }
