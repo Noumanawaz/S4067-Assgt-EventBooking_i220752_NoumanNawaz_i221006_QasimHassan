@@ -25,6 +25,6 @@ app.listen(PORT, async () => {
   } catch (err) {
     console.error("Error during server startup:", err.message);
     process.exit(1); // Exit the process with an error code
-
+    console.log("Server running on port 4000");
   }
 });
