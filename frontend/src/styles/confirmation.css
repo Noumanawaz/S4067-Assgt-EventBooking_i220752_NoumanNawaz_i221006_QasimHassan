@@ -1,84 +1,120 @@
-/* src/styles/confirmation.css */
+/* Import Poppins font */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
 
-
-.confirmation-container {
-  text-align: center;
-  padding: 50px 20px;
+/* Confirmation Page Container */
+.confirmation-page {
+  max-width: 800px; /* Wider to accommodate multiple cards */
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: 'Poppins', sans-serif;
+  background-color: #F5F6FA; /* Light Gray background */
 }
 
-.confirmation-container h1 {
-  font-size: 30px;
-  font-weight: 700;
-  color: #2c3e50;
-  margin-bottom: 25px;
-  text-transform: uppercase;
+/* Heading */
+.confirmation-page h1 {
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: #2C3E50; /* Deep Blue-Gray */
+  text-align: center;
+  margin-bottom: 2.5rem;
   letter-spacing: 1px;
 }
 
-/* Styling for multiple booking cards */
-.confirmation-card {
-  background: white;
-  padding: 25px;
-  border-radius: 15px;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-  width: 400px;
-  margin: 20px auto;
-  text-align: center;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+/* Confirmation Booking Card */
+.confirmation-booking-card {
+  background-color: #FFFFFF;
+  border-radius: 12px; /* Rounded corners */
+  padding: 1.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  border: 1px solid #e0e0e0; /* Subtle border */
+  margin-bottom: 1.5rem; /* Space between cards */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.confirmation-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
+.confirmation-booking-card:hover {
+  transform: translateY(-8px); /* Lift on hover */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
 }
 
-.confirmation-card p {
-  font-size: 18px;
-  color: #555;
-  margin: 10px 0;
-  font-weight: 500;
+/* Booking Details */
+.confirmation-booking-card p {
+  font-size: 0.95rem;
+  color: #333333;
+  margin-bottom: 0.75rem;
 }
 
-.status {
-  font-size: 20px;
-  font-weight: bold;
-  color: #27ae60;
-  background: rgba(39, 174, 96, 0.1);
-  padding: 8px 15px;
-  border-radius: 8px;
-  display: inline-block;
-  margin-top: 10px;
-}
-
-/* Back to Home Button */
-.back-btn {
-  background: linear-gradient(135deg, #3498db, #2c3e50);
-  color: white;
-  border: none;
-  padding: 12px 20px;
-  cursor: pointer;
-  border-radius: 10px;
-  font-size: 18px;
+.confirmation-booking-card p strong {
+  color: #2C3E50; /* Deep Blue-Gray */
   font-weight: 600;
-  margin-top: 30px;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.back-btn:hover {
-  background: linear-gradient(135deg, #2c3e50, #1a252f);
-  transform: scale(1.05);
+/* Status */
+.confirmation-status {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #27AE60; /* Green for confirmed status */
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+}
+
+/* Back Button */
+.confirmation-back-btn {
+  display: block; /* Center button */
+  margin: 2rem auto 0;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #FFFFFF;
+  background-color: #2C3E50; /* Deep Blue-Gray for contrast */
+  border: none;
+  border-radius: 20px; /* Pill-like button */
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(44, 62, 80, 0.3); /* Subtle shadow */
+}
+
+.confirmation-back-btn:hover {
+  background-color: #1F2A3C; /* Darker shade */
+  transform: scale(1.05); /* Slight scale effect */
+  box-shadow: 0 4px 8px rgba(44, 62, 80, 0.4); /* Enhanced shadow */
 }
 
 /* Responsive Design */
-@media (max-width: 500px) {
-  .confirmation-card {
-    width: 90%;
-    padding: 20px;
+@media (max-width: 768px) {
+  .confirmation-page h1 {
+    font-size: 2rem;
   }
-  
-  .back-btn {
-    width: 90%;
+
+  .confirmation-booking-card {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmation-page {
+    margin: 1rem auto;
+    padding: 0 0.5rem;
+  }
+
+  .confirmation-page h1 {
+    font-size: 1.75rem;
+  }
+
+  .confirmation-booking-card {
+    padding: 1rem;
+  }
+
+  .confirmation-booking-card p {
+    font-size: 0.9rem;
+  }
+
+  .confirmation-status {
+    font-size: 0.85rem;
+  }
+
+  .confirmation-back-btn {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
   }
 }

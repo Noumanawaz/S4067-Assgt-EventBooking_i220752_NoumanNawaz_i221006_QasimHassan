@@ -56,10 +56,10 @@ const CreateEvent = () => {
   };
 
   return (
-    <div className="create-event-container">
+    <div className="create-event-page">
       <h1>Create New Event</h1>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit} className="event-form">
+      {error && <p className="create-event-error">{error}</p>}
+      <form onSubmit={handleSubmit} className="create-event-form">
         <input type="text" name="name" placeholder="Event Name" value={eventData.name} onChange={handleChange} />
         <textarea name="description" placeholder="Event Description" value={eventData.description} onChange={handleChange} />
         <input type="date" name="date" value={eventData.date} onChange={handleChange} />

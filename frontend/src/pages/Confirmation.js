@@ -25,18 +25,18 @@ const Confirmation = () => {
   ];
 
   return (
-    <div className="confirmation-container">
+    <div className="confirmation-page">
       <h1>Booking Confirmations 🎉</h1>
       {bookingDetails.map((booking) => (
-        <div key={booking.booking_id} className="confirmation-card">
+        <div key={booking.booking_id} className="confirmation-booking-card">
           <p><strong>Booking ID:</strong> {booking.booking_id}</p>
           <p><strong>Event:</strong> {booking.event_name}</p>
           <p><strong>Date:</strong> {booking.date}</p>
           <p><strong>Tickets:</strong> {booking.tickets}</p>
-          <p className="status">{booking.status}</p>
+          <p className="confirmation-status">{booking.status}</p>
         </div>
       ))}
-      <button className="back-btn" onClick={() => navigate("/")}>Back to Home</button>
+      <button className="confirmation-back-btn" onClick={() => navigate("/")}>Back to Home</button>
     </div>
   );
 };

@@ -29,21 +29,22 @@ const Booking = () => {
   };
 
   return (
-    <div className="booking-container">
+    <div className="booking-page">
       <h1>Book Tickets for {event.name}</h1>
-      <p>Date: {event.date}</p>
-      <p>Available Tickets: {event.tickets}</p>
+      <p className="booking-date">Date: {event.date}</p>
+      <p className="booking-tickets">Available Tickets: {event.tickets}</p>
 
-      <label>Number of Tickets:</label>
+      <label className="booking-label">Number of Tickets:</label>
       <input
         type="number"
         min="1"
         max={event.tickets}
         value={tickets}
         onChange={(e) => setTickets(e.target.value)}
+        className="booking-ticket-input"
       />
 
-      <button className="confirm-btn" onClick={handleBooking}>
+      <button className="booking-confirm-btn" onClick={handleBooking}>
         Confirm Booking
       </button>
     </div>

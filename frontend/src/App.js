@@ -10,7 +10,7 @@ import Register from "./pages/Register";
 import "./styles/global.css";
 
 // ✅ Corrected authentication check
-const isAuthenticated = "true"
+const isAuthenticated = "false"
 
 // Protected Route Component
 const ProtectedRoute = ({ element }) => {
@@ -25,12 +25,14 @@ function App() {
     <div>
       {!hideNavbar && <Navbar />} 
       <Routes>
+      
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/book/:eventId" element={<ProtectedRoute element={<Booking />} />} />
         <Route path="/confirmation" element={<ProtectedRoute element={<Confirmation />} />} />
         <Route path="/create-event" element={<ProtectedRoute element={<CreateEvent />} />} />
+    
       </Routes>
     </div>
   );
