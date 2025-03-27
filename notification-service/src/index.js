@@ -7,8 +7,8 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 4003;
-const RABBITMQ_URL = process.env.RABBITMQ_URL;
-const MONGO_URI = process.env.MONGO_URI;
+const RABBITMQ_URL = "amqp://localhost";
+const MONGO_URI ="mongodb://localhost:27017/notifications;"
 
 // MongoDB Connection
 mongoose.connect(MONGO_URI, {

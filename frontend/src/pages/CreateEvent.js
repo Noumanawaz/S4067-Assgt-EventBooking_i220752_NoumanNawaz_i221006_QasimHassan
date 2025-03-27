@@ -1,4 +1,3 @@
-// src/pages/CreateEvent.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/createEvent.css";
@@ -23,7 +22,7 @@ const CreateEvent = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Simple validation
@@ -38,21 +37,34 @@ const CreateEvent = () => {
       return;
     }
 
-    // Simulate adding event (Later this will be an API call)
-    console.log("Event Created:", eventData);
+    try {
+      const response = await fetch("http://localhost:5002/api/events", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(eventData),
+      });
 
-    // Clear form & navigate back to Home
-    setEventData({
-      name: "",
-      description: "",
-      date: "",
-      location: "",
-      availableTickets: "",
-    });
+      if (!response.ok) {
+        throw new Error("Failed to create event");
+      }
 
-    setError("");
-    alert("Event Created Successfully!");
-    navigate("/");
+      // Clear form & navigate back to Home
+      setEventData({
+        name: "",
+        description: "",
+        date: "",
+        location: "",
+        availableTickets: "",
+      });
+
+      setError("");
+      alert("Event Created Successfully!");
+      navigate("/");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (

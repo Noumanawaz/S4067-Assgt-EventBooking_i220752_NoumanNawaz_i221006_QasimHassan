@@ -1,4 +1,3 @@
-// src/pages/Register.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/register.css";
@@ -8,13 +7,11 @@ const Register = () => {
   const [userData, setUserData] = useState({ name: "", email: "", password: "" });
   const [error, setError] = useState("");
 
-  // Handle input change
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission (No API call yet)
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!userData.name || !userData.email || !userData.password) {
@@ -22,9 +19,25 @@ const Register = () => {
       return;
     }
 
-    // Simulating successful registration
-    alert("Registration Successful!");
-    navigate("/login"); // Redirect to login after registration
+    try {
+      const response = await fetch("http://localhost:4000/api/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      alert("Registration Successful!");
+      navigate("/login");
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
