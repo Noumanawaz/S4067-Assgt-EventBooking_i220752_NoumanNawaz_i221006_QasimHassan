@@ -1,25 +1,18 @@
-// src/pages/Login.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom"; // Import Link for navigation
+import { Link } from "react-router-dom";
 import "../styles/login.css";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  // Static user for testing (since backend is not running)
-  const fakeUser = { email: "user@example.com", password: "password123" };
-
   const [userData, setUserData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  // Handle input change
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission (without API)
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!userData.email || !userData.password) {
@@ -27,13 +20,27 @@ const Login = () => {
       return;
     }
 
-    // Fake login check (matches static user)
-    if (userData.email === fakeUser.email && userData.password === fakeUser.password) {
-      setError("");
-      alert("Login Successful!"); // Temporary success message
-      navigate("/profile"); // Redirect to Profile Page
-    } else {
-      setError("Invalid email or password!");
+    try {
+      const response = await fetch("http://localhost:4000/api/users/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Store user data in localStorage
+      localStorage.setItem("user", JSON.stringify({ id: data.user.id, email: data.user.email, token: data.token }));
+
+      alert("Login Successful!");
+      navigate("/profile");
+    } catch (err) {
+      setError(err.message);
     }
   };
 

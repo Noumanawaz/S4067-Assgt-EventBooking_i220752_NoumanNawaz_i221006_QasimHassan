@@ -1,5 +1,7 @@
 const { Pool } = require('pg');
-require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env') });
 
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -9,8 +11,36 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
-pool.on('connect', () => {
+const initDatabase = async () => {
+    try {
+        const res = await pool.query(
+            `SELECT EXISTS (
+                SELECT FROM information_schema.tables 
+                WHERE table_name = 'bookings'
+            );`
+        );
+
+        if (!res.rows[0].exists) {
+            console.log('Table "bookings" does not exist. Running init.sql...');
+            const initSqlPath = path.resolve(__dirname, '../../sql/init.sql'); // Adjusted path
+            const initSql = fs.readFileSync(initSqlPath, 'utf-8');
+            await pool.query(initSql);
+            console.log('Database initialized.');
+        } else {
+            console.log('Table "bookings" already exists.');
+        }
+    } catch (err) {
+        console.error('Error initializing database:', err);
+    }
+};
+
+pool.on('connect', async () => {
     console.log('Connected to the database');
+    console.log(`Database URL: ${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`);
+    
+    await initDatabase(); // Run initialization check
+
+    console.log('Database setup complete.');
 });
 
 pool.on('error', (err) => {

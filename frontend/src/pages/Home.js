@@ -1,42 +1,37 @@
-// src/pages/Home.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/home.css";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Static event data (Backend is not running yet)
-  const events = [
-    { 
-      id: 1, 
-      name: "Tech Conference 2025", 
-      date: "2025-05-10", 
-      location: "San Francisco, CA",
-      tickets: 50,
-      description: "A leading tech event featuring industry experts and innovations."
-    },
-    { 
-      id: 2, 
-      name: "Music Festival", 
-      date: "2025-06-15", 
-      location: "New York City, NY",
-      tickets: 30,
-      description: "A live music festival with top artists from around the world."
-    },
-    { 
-      id: 3, 
-      name: "Startup Pitch Night", 
-      date: "2025-07-20", 
-      location: "Los Angeles, CA",
-      tickets: 20,
-      description: "Entrepreneurs pitch their ideas to investors and industry leaders."
-    },
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://localhost:5002/api/events");
+        if (!response.ok) {
+          throw new Error("Failed to fetch events");
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   return (
     <div className="home-container">
       <h1>Upcoming Events</h1>
+      {loading && <p>Loading events...</p>}
+      {error && <p className="error">{error}</p>}
       <div className="event-list">
         {events.map((event) => (
           <div key={event.id} className="event-card">
@@ -47,7 +42,7 @@ const Home = () => {
             <p className="event-description">{event.description}</p>
             <button 
               className="book-btn"
-              onClick={() => navigate(`/book/${event.id}`)}
+              onClick={() => navigate(`/book/${event._id}`)}
             >
               Reserve Your Spot
             </button>

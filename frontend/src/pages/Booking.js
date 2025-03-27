@@ -1,38 +1,77 @@
-// src/pages/Booking.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/booking.css";
 
 const Booking = () => {
   const { eventId } = useParams();
   const navigate = useNavigate();
+  const [event, setEvent] = useState(null);
   const [tickets, setTickets] = useState(1);
+  const [error, setError] = useState(null);
 
-  // Static event data (replace this with API call later)
-  const events = [
-    { id: 1, name: "Tech Conference 2025", date: "2025-05-10", tickets: 50 },
-    { id: 2, name: "Music Festival", date: "2025-06-15", tickets: 30 },
-    { id: 3, name: "Startup Pitch Night", date: "2025-07-20", tickets: 20 },
-  ];
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await fetch(`http://localhost:5002/api/events/${eventId}`);
+        if (!response.ok) {
+          throw new Error("Event not found");
+        }
+        const data = await response.json();
+        setEvent(data);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+    fetchEvent();
+  }, [eventId]);
 
-  // Find the selected event
-  const event = events.find((e) => e.id === parseInt(eventId));
+  const handleBooking = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user")); // Get user info from localStorage
+      if (!user || !user.id || !user.email) {
+        throw new Error("User not logged in. Please login first.");
+      }
+  
+      console.log(eventId, tickets, user.id, user.email);
+      
+      const response = await fetch("http://localhost:3002/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          eventId, 
+          tickets, 
+          userId: user.id, 
+          email: user.email 
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to book tickets");
+      }
+  
+      alert(`Booking confirmed for ${tickets} tickets to ${event.name}!`);
+      navigate("/confirmation");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+  
 
-  if (!event) {
-    return <h2>Event not found</h2>;
+  if (error) {
+    return <h2>{error}</h2>;
   }
 
-  // Handle Booking (static for now, no backend call)
-  const handleBooking = () => {
-    alert(`Booking confirmed for ${tickets} tickets to ${event.name}!`);
-    navigate("/confirmation"); // Redirect to confirmation page
-  };
+  if (!event) {
+    return <h2>Loading event details...</h2>;
+  }
 
   return (
     <div className="booking-page">
       <h1>Book Tickets for {event.name}</h1>
       <p className="booking-date">Date: {event.date}</p>
-      <p className="booking-tickets">Available Tickets: {event.tickets}</p>
+      <p className="booking-tickets">Available Tickets: {event.availableTickets}</p>
 
       <label className="booking-label">Number of Tickets:</label>
       <input
@@ -40,7 +79,7 @@ const Booking = () => {
         min="1"
         max={event.tickets}
         value={tickets}
-        onChange={(e) => setTickets(e.target.value)}
+        onChange={(e) => setTickets(parseInt(e.target.value))}
         className="booking-ticket-input"
       />
 
